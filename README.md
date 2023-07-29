@@ -1,4 +1,4 @@
-![image](https://github.com/JiahaoZeng/LMFL/blob/main/resource/readme_resource/LMFL.png)
+![image](https://github.com/JiahaoZeng/LMFL/raw/main/resource/readme_resource/LMFL.png)
 # LMFL
 **Version**: 1.1.1\
 **LMFL** *(Lightweight Multi-Function Library)*\
@@ -30,4 +30,4 @@ int main(){                                  //enter function
 ### run
 >   Hello
 ### result
-![image](https://github.com/JiahaoZeng/LMFL/blob/main/resource/readme_resource/Hello.png)
+![image](https://github.com/JiahaoZeng/LMFL/raw/main/resource/readme_resource/Hello.png)
