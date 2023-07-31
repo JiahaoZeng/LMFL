@@ -31,3 +31,4 @@ int main(){                                  //enter function
 >   Hello
 ### result
 ![image](resource/readme_resource/Hello.png)
+*read [examples](intro/examples) for more example.*
