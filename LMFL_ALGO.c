@@ -157,8 +157,44 @@ bool _LMFL_ALGO_queue_whether_empty( lmfl_queue* this){
     return ( this->length == 0);
 }
 
-bool _LMFL_ALGO_sort( void* array, unsigned length, lmfl_cfunc cmp){
-// TODO
+bool _LMFL_ALGO_sort( void* array, unsigned type_size, lmfl_cfunc cmp, unsigned length){
+    typedef lmfl_byte ELE_TYPE[type_size];
+    ELE_TYPE* arr_tmp = (ELE_TYPE*)array;
+
+    if ( length == 0 || length == 1){
+        return true;
+    }
+
+    ELE_TYPE pivot;
+    LMFL_DATA_EXPORT(arr_tmp[0], pivot);
+    unsigned left = 0;
+    unsigned right = length-1;
+
+    while ( left < right){
+        while( left < right && cmp(arr_tmp[right], pivot)){
+            right--;
+        }
+        if ( left < right){
+            ELE_TYPE ele_tmp;
+            LMFL_DATA_EXPORT( arr_tmp[left], ele_tmp);
+            LMFL_DATA_EXPORT( arr_tmp[right], arr_tmp[left]);
+            LMFL_DATA_EXPORT( ele_tmp, arr_tmp[right]);
+        }
+
+        while( left < right && !cmp(arr_tmp[left], pivot)){
+            left++;
+        }
+        if ( left < right){
+            ELE_TYPE ele_tmp;
+            LMFL_DATA_EXPORT( arr_tmp[left], ele_tmp);
+            LMFL_DATA_EXPORT( arr_tmp[right], arr_tmp[left]);
+            LMFL_DATA_EXPORT( ele_tmp, arr_tmp[right]);
+        }
+    }
+
+    _LMFL_ALGO_sort( array, type_size, cmp, left);
+    _LMFL_ALGO_sort( array + left*type_size, type_size, cmp, length - left);
+
     return true;
 }
 

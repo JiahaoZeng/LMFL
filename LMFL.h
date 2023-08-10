@@ -137,7 +137,8 @@ lmfl_data _LMFL_ALGO_queue_get_front( lmfl_queue*);
 bool _LMFL_ALGO_queue_whether_empty( lmfl_queue*);
 
 typedef bool(*lmfl_cfunc)(lmfl_data,lmfl_data);
-bool _LMFL_ALGO_sort( void* array, unsigned length, lmfl_cfunc cmp);
+
+bool _LMFL_ALGO_sort( void* array, unsigned type_size, lmfl_cfunc cmp, unsigned length);
 
 // High precision value
 typedef struct{
