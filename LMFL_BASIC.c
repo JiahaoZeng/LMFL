@@ -1,3 +1,8 @@
+/**
+** LMFL_BASIC.c - Basic implementations.
+** Copyright (c) 2023 JiahaoZeng.
+**/
+
 #include "LMFL.h"
 #ifdef _LMFL_BASIC_
 void _LMFL_BASIC_GARBAGE_init(){

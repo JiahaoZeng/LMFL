@@ -1,3 +1,8 @@
+/**
+** LMFL1.h
+** Copyright (c) 2023 JiahaoZeng.
+**/
+
 #ifndef _LMFL_
 #   include "LMFL.h"
 #endif

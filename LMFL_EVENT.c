@@ -1,3 +1,8 @@
+/**
+** LMFL_EVENT.c - The implementation of event-catching.
+** Copyright (c) 2023 JiahaoZeng.
+**/
+
 #include "LMFL.h"
 #ifdef _LMFL_EVENT_
 lmfl_point _LMFL_EVENT_event_get_mouse( lmfl_window* window){

@@ -1,3 +1,8 @@
+/**
+** LMFL_GRAPH.c - The implementation of graphic-drawing.
+** Copyright (c) 2023 JiahaoZeng.
+**/
+
 #include "LMFL.h"
 #ifdef _LMFL_GRAPH_
 lmfl_gparam _LMFL_GRAPH_gparam_create0( unsigned cweight, lmfl_rgb color, lmfl_rectangle rectangle){

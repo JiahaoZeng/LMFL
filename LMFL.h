@@ -1,3 +1,8 @@
+/**
+** LMFL.h - 1.0.0
+** Copyright (c) 2023 JiahaoZeng.
+**/
+
 #ifndef _LMFL_
 #   pragma once
 #   define _LMFL_
@@ -34,6 +39,7 @@ typedef lmfl_byte* lmfl_data;
 //                             "resource" can't be a const but a var.
 #       define LMFL_DATA_EXPORT(This,resource) ({\
             memcpy(&resource,This,sizeof(resource));\
+            resource;\
         })
 HDC* _LMFL_BASIC_GARBAGE_dc;
 HGDIOBJ* _LMFL_BASIC_GARBAGE_obj;
@@ -94,14 +100,15 @@ long _LMFL_BASIC_timer_get_time( lmfl_timer*);
 #   ifndef _LMFL_ALGO_
 #       define _LMFL_ALGO_
 typedef struct{
-    int size_max;
+    int deep;
     int _PRIVATE_top;
     bool _PRIVATE_whether_empty;
-    lmfl_data* _PRIVATE_memory;
+    void* _PRIVATE_memory;
+    unsigned type_size;
     bool whether_alive;
 }
 lmfl_stack;
-lmfl_stack _LMFL_ALGO_stack_create0( int size_max);
+lmfl_stack _LMFL_ALGO_stack_create0( int deep, unsigned type_size);
 bool _LMFL_ALGO_stack_delete( lmfl_stack*);
 bool _LMFL_ALGO_stack_push( lmfl_stack*, lmfl_data);
 bool _LMFL_ALGO_stack_pop( lmfl_stack*);
@@ -430,8 +437,8 @@ struct{
 #   endif /*_LMFL_BASIC_*/
 #   ifdef _LMFL_ALGO_
     struct{
-        lmfl_stack(*create)(int);
-        lmfl_stack(*create0)(int);
+        lmfl_stack(*create)(int,unsigned);
+        lmfl_stack(*create0)(int,unsigned);
         bool(*del)(lmfl_stack*);
         bool(*push)(lmfl_stack*,lmfl_data);
         bool(*pop)(lmfl_stack*);

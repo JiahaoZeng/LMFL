@@ -1,3 +1,8 @@
+/**
+** LMFL_PLANE.c - The implementation of plane-operating.
+** Copyright (c) 2023 JiahaoZeng.
+**/
+
 #include "LMFL.h"
 #ifdef _LMFL_PLANE_
 lmfl_plane _LMFL_PLANE_plane_create0( lmfl_plane* father, unsigned width, unsigned height){
@@ -22,7 +27,7 @@ lmfl_plane _LMFL_PLANE_plane_create1( lmfl_plane* father, char* path, unsigned w
     this._PRIVATE_map = (HBITMAP)
                                 LoadImage(
                                     GetModuleHandle(0),
-                                    TEXT(path),
+                                    TEXT((path)),
                                     IMAGE_BITMAP,
                                     width,
                                     height,

@@ -1,4 +1,4 @@
-# LMFL (Lightweight Multi-Function Library) 1.0.0
+# <font color = "orange">LMFL</font> (Lightweight Multi-Function Library) 1.0.0
 ## Directory
 - [LMFL (Lightweight Multi-Function Library) 1.0.0](#lmfl-lightweight-multi-function-library-100)
   - [Directory](#directory)

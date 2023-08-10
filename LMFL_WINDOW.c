@@ -1,3 +1,8 @@
+/**
+** LMFL_WINDOW.c - The implementation of window-operating.
+** Copyright (c) 2023 JiahaoZeng.
+**/
+
 #include "LMFL.h"
 #ifdef _LMFL_WINDOW_
 static unsigned _LMFL_WINDOW_window_class_num;

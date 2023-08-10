@@ -1,3 +1,8 @@
+/**
+** LMFL_TEXT.c - The implementation of text-show.
+** Copyright (c) 2023 JiahaoZeng.
+**/
+
 #include "LMFL.h"
 #ifdef _LMFL_TEXT_
 lmfl_font _LMFL_TEXT_font_create0( char* style, unsigned width, unsigned height, unsigned cweight, lmfl_rgb color){
@@ -21,7 +26,7 @@ lmfl_font _LMFL_TEXT_font_create0( char* style, unsigned width, unsigned height,
                                         CLIP_DEFAULT_PRECIS,
                                         CLEARTYPE_QUALITY,
                                         FF_SWISS,
-                                        TEXT( style)
+                                        TEXT((style))
                         );
     this.whether_alive = true;
     return this;
@@ -55,7 +60,7 @@ bool _LMFL_TEXT_text_on( char* text, lmfl_font font, lmfl_rectangle rectangle, l
         SetTextColor( plane->_PRIVATE_hdc, RGB( font.color.r, font.color.g, font.color.b));
         SelectObject( plane->_PRIVATE_hdc, font._PRIVATE_hfont);
 
-        DrawText( plane->_PRIVATE_hdc, TEXT(text), -1, &rect, DT_LEFT|DT_TOP|DT_WORDBREAK);
+        DrawText( plane->_PRIVATE_hdc, TEXT((text)), -1, &rect, DT_LEFT|DT_TOP|DT_WORDBREAK);
     }
     plane->whether_operating = false;
     return true;

@@ -1,3 +1,8 @@
+/**
+** LMFL_MATH.c - The implementation of math.
+** Copyright (c) 2023 JiahaoZeng.
+**/
+
 #include "LMFL.h"
 #ifdef _LMFL_MATH_
 lmfl_point _LMFL_MATH_point_create0( int x, int y){

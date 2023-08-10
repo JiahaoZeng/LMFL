@@ -1,10 +1,16 @@
+/**
+** LMFL_ALGO.c - The implementation of basic algorithms.
+** Copyright (c) 2023 JiahaoZeng.
+**/
+
 #include "LMFL.h"
 #ifdef _LMFL_ALGO_
-lmfl_stack _LMFL_ALGO_stack_create0( int size_max){
+lmfl_stack _LMFL_ALGO_stack_create0( int deep, unsigned type_size){
     lmfl_stack this;
-    this.size_max = size_max;
+    this.type_size = type_size;
+    this.deep = deep;
     this._PRIVATE_top = 0;
-    this._PRIVATE_memory = (lmfl_data*)malloc( size_max);
+    this._PRIVATE_memory = (lmfl_data*)malloc( deep*type_size);
     _LMFL_BASIC_GARBAGE_pointer_join( this._PRIVATE_memory);
     this._PRIVATE_whether_empty = true;
     this.whether_alive = true;
@@ -24,16 +30,19 @@ bool _LMFL_ALGO_stack_push( lmfl_stack* this, lmfl_data value){
     if ( this->whether_alive == false){
         return false;
     }
-    if ( this->_PRIVATE_top == this->size_max-1){
+    if ( this->_PRIVATE_top == this->deep-1){
         return false;
     }
+
+    typedef lmfl_byte ELE_TYPE[this->type_size];
+    ELE_TYPE* tmp = (ELE_TYPE*)this->_PRIVATE_memory;
     if ( this->_PRIVATE_whether_empty){
-        this->_PRIVATE_memory[0] = value;
+        LMFL_DATA_EXPORT( value, tmp[0]);
         this->_PRIVATE_whether_empty = false;
         return true;
     }
     this->_PRIVATE_top++;
-    this->_PRIVATE_memory[ this->_PRIVATE_top] = value;
+    LMFL_DATA_EXPORT( value, tmp[ this->_PRIVATE_top]);
     return true;
 }
 
@@ -59,7 +68,10 @@ lmfl_data _LMFL_ALGO_stack_get_top( lmfl_stack* this){
     if ( this->_PRIVATE_whether_empty){
         _LMFL_BASIC_PUTERROR("this stack is empty");
     }
-    return this->_PRIVATE_memory[ this->_PRIVATE_top];
+
+    typedef lmfl_byte ELE_TYPE[ this->type_size];
+    ELE_TYPE* tmp = (ELE_TYPE*)this->_PRIVATE_memory;
+    return LMFL_DATA_IMPORT( tmp[ this->_PRIVATE_top]);
 }
 
 bool _LMFL_ALGO_stack_whether_empty( lmfl_stack* this){

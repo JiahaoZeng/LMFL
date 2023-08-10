@@ -1,5 +1,5 @@
 /**
-** test.c - An example of the LMFL DATA type.
+** GetMax.c - An example of the LMFL DATA type.
 ** Copyright (c) 2023 JiahaoZeng.
 **/
 
@@ -57,6 +57,7 @@ unsigned get_singer_hotness( DATA data){
 int main(){
     LMFL;
 
+    // Find the hottest song
     song songs[3];
     songs[0].hotness = 10;
     songs[0].name = "Awaiting on you all";
@@ -69,6 +70,7 @@ int main(){
     LMFL_DATA_EXPORT( get_max( songs, sizeof(song), get_song_hotness, 3), hottest_song);
     printf( "The hottest song is: ¡¶%s¡·.\n", hottest_song.name);
 
+    // Find the hottest singer
     singer singers[4];
     singers[0].hotness = 7;
     singers[0].name = "Paul McCartney";

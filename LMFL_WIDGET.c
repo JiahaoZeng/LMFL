@@ -1,3 +1,8 @@
+/**
+** LMFL_WIDGET.c - The implementation of widget-operations.
+** Copyright (c) 2023 JiahaoZeng.
+**/
+
 #include "LMFL.h"
 #ifdef _LMFL_WIDGET_
 lmfl_pushbox _LMFL_WIDGET_pushbox_create0( lmfl_rectangle rectangle, lmfl_pfuncs funcs, lmfl_window* window){

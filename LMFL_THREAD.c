@@ -1,3 +1,8 @@
+/**
+** LMFL_THREAD.c - The implementation of thread operations.
+** Copyright (c) 2023 JiahaoZeng.
+**/
+
 #include "LMFL.h"
 #ifdef _LMFL_THREAD_
 lmfl_thread _LMFL_THREAD_thread_create0( lmfl_tfunc func, lmfl_void param){
