@@ -1,12 +1,14 @@
 #ifndef _LMFL_
 #   pragma once
 #   define _LMFL_
+#   define LMFL_VERSION "1.0.0"
 #   define _LMFL_H
 #   ifndef _LMFL_BASIC_
 #       define _LMFL_BASIC_
 #       include <stdbool.h>
 #       include <stdlib.h>
 #       include <stdio.h>
+#       include <string.h>
 #       include <windows.h>
 #       include <vfw.h>
 #       include <mmsystem.h>
@@ -21,14 +23,24 @@
             printf("LMFL ERROR:%s(func:%s,file:%s,line:%i)\n",error,__func__,__FILE__,__LINE__);\
         }
 
-typedef long double lmfl_data;
-
+typedef char lmfl_byte;
+typedef lmfl_byte* lmfl_data;
+//                             "resource" can't be a const but a var.
+#       define LMFL_DATA_IMPORT(resource) ({\
+            lmfl_data This;\
+            This = (lmfl_byte*)memcpy(alloca(sizeof(resource)),&resource,sizeof(resource));\
+            This;\
+        })
+//                             "resource" can't be a const but a var.
+#       define LMFL_DATA_EXPORT(This,resource) ({\
+            memcpy(&resource,This,sizeof(resource));\
+        })
 HDC* _LMFL_BASIC_GARBAGE_dc;
 HGDIOBJ* _LMFL_BASIC_GARBAGE_obj;
 void** _LMFL_BASIC_GARBAGE_pointer;
-void _LMFL_BASIC_GARBAGE_dc_join( HDC this);
-void _LMFL_BASIC_GARBAGE_obj_join( HGDIOBJ this);
-void _LMFL_BASIC_GARBAGE_pointer_join( void* this);
+void _LMFL_BASIC_GARBAGE_dc_join( HDC);
+void _LMFL_BASIC_GARBAGE_obj_join( HGDIOBJ);
+void _LMFL_BASIC_GARBAGE_pointer_join( void*);
 void _LMFL_BASIC_GARBAGE_free();
 void _LMFL_BASIC_GARBAGE_init();
 
@@ -62,7 +74,7 @@ lmfl_rgba;
 lmfl_rgb _LMFL_BASIC_rgb_create0( unsigned r, unsigned g, unsigned b);
 lmfl_rgba _LMFL_BASIC_rgba_create0( unsigned r, unsigned g, unsigned b, unsigned a);
 
-unsigned _LMFL_BASIC_rgb_get_gray( lmfl_rgb this);
+unsigned _LMFL_BASIC_rgb_get_gray( lmfl_rgb);
 
 typedef struct{
     long start;
@@ -73,10 +85,10 @@ typedef struct{
 }
 lmfl_timer;
 lmfl_timer _LMFL_BASIC_timer_create0();
-bool _LMFL_BASIC_timer_init( lmfl_timer* this);
-bool _LMFL_BASIC_timer_start( lmfl_timer* this);
-bool _LMFL_BASIC_timer_stop( lmfl_timer* this);
-long _LMFL_BASIC_timer_get_time( lmfl_timer* this);
+bool _LMFL_BASIC_timer_init( lmfl_timer*);
+bool _LMFL_BASIC_timer_start( lmfl_timer*);
+bool _LMFL_BASIC_timer_stop( lmfl_timer*);
+long _LMFL_BASIC_timer_get_time( lmfl_timer*);
 #   endif /*_LMFL_BASIC_*/
 
 #   ifndef _LMFL_ALGO_
@@ -90,11 +102,11 @@ typedef struct{
 }
 lmfl_stack;
 lmfl_stack _LMFL_ALGO_stack_create0( int size_max);
-bool _LMFL_ALGO_stack_delete( lmfl_stack* this);
-bool _LMFL_ALGO_stack_push( lmfl_stack* this, lmfl_data value);
-bool _LMFL_ALGO_stack_pop( lmfl_stack* this);
-lmfl_data _LMFL_ALGO_stack_get_top( lmfl_stack* this);
-bool _LMFL_ALGO_stack_whether_empty( lmfl_stack* this);
+bool _LMFL_ALGO_stack_delete( lmfl_stack*);
+bool _LMFL_ALGO_stack_push( lmfl_stack*, lmfl_data);
+bool _LMFL_ALGO_stack_pop( lmfl_stack*);
+lmfl_data _LMFL_ALGO_stack_get_top( lmfl_stack*);
+bool _LMFL_ALGO_stack_whether_empty( lmfl_stack*);
 
 typedef struct _LMFL_ALGO_PRIVATE_TYPE_QUEUE_NODE_tag{
     lmfl_data value;
@@ -111,14 +123,14 @@ typedef struct{
 }
 lmfl_queue;
 lmfl_queue _LMFL_ALGO_queue_create0();
-bool _LMFL_ALGO_queue_delete( lmfl_queue* this);
-bool _LMFL_ALGO_queue_push( lmfl_queue* this, lmfl_data value);
-bool _LMFL_ALGO_queue_pop( lmfl_queue* this);
-lmfl_data _LMFL_ALGO_queue_get_front( lmfl_queue* this);
-bool _LMFL_ALGO_queue_whether_empty( lmfl_queue* this);
+bool _LMFL_ALGO_queue_delete( lmfl_queue*);
+bool _LMFL_ALGO_queue_push( lmfl_queue*, lmfl_data value);
+bool _LMFL_ALGO_queue_pop( lmfl_queue*);
+lmfl_data _LMFL_ALGO_queue_get_front( lmfl_queue*);
+bool _LMFL_ALGO_queue_whether_empty( lmfl_queue*);
 
-typedef bool(*lmfl_cfunc)(double,double);
-bool _LMFL_ALGO_sort( lmfl_data* array, unsigned length, lmfl_cfunc cmp);
+typedef bool(*lmfl_cfunc)(lmfl_data,lmfl_data);
+bool _LMFL_ALGO_sort( void* array, unsigned length, lmfl_cfunc cmp);
 
 // High precision value
 typedef struct{
@@ -127,15 +139,15 @@ typedef struct{
     bool whether_alive;
 }
 lmfl_hpv;
-lmfl_hpv _LMFL_ALGO_create0( unsigned MSD);
-lmfl_hpv _LMFL_ALGO_create1( unsigned MSD, lmfl_data source);
-bool _LMFL_ALGO_read( lmfl_hpv* this, char* num);
-bool _LMFL_ALGO_copy( lmfl_hpv* this, lmfl_hpv hpv);
-bool _LMFL_ALGO_hpv_add( lmfl_hpv* this, lmfl_hpv x, lmfl_hpv y);
-bool _LMFL_ALGO_hpv_sub( lmfl_hpv* this, lmfl_hpv x, lmfl_hpv y);
-bool _LMFL_ALGO_hpv_mult( lmfl_hpv* this, lmfl_hpv x, lmfl_hpv y);
-bool _LMFL_ALGO_hpv_div( lmfl_hpv* this, lmfl_hpv x, lmfl_hpv y);
-bool _LMFL_ALGO_hpv_pow( lmfl_hpv* this, lmfl_hpv x, lmfl_hpv y);
+lmfl_hpv _LMFL_ALGO_hpv_create0( unsigned MSD);
+lmfl_hpv _LMFL_ALGO_hpv_create1( unsigned MSD, lmfl_data source);
+bool _LMFL_ALGO_hpv_read( lmfl_hpv*, char*);
+bool _LMFL_ALGO_hpv_copy( lmfl_hpv*, lmfl_hpv);
+bool _LMFL_ALGO_hpv_add( lmfl_hpv*, lmfl_hpv x, lmfl_hpv y);
+bool _LMFL_ALGO_hpv_sub( lmfl_hpv*, lmfl_hpv x, lmfl_hpv y);
+bool _LMFL_ALGO_hpv_mult( lmfl_hpv*, lmfl_hpv x, lmfl_hpv y);
+bool _LMFL_ALGO_hpv_div( lmfl_hpv*, lmfl_hpv x, lmfl_hpv y);
+bool _LMFL_ALGO_hpv_pow( lmfl_hpv*, lmfl_hpv x, lmfl_hpv y);
 
 #   endif
 
@@ -174,23 +186,23 @@ lmfl_vector _LMFL_MATH_vector_create1( double mudulus, double angle);
 lmfl_vector _LMFL_MATH_vector_create2( lmfl_point start, lmfl_point end);
 lmfl_parallelogram _LMFL_MATH_parallegram_create0( lmfl_point point0, lmfl_point point1, lmfl_point point2);
 
-lmfl_point _LMFL_MATH_point_move( lmfl_point this, lmfl_vector vector);
-lmfl_rectangle _LMFL_MATH_rectangle_move( lmfl_rectangle this, lmfl_vector vector);
-lmfl_parallelogram _LMFL_MATH_parallegram_move( lmfl_parallelogram this, lmfl_vector vector);
+lmfl_point _LMFL_MATH_point_move( lmfl_point, lmfl_vector vector);
+lmfl_rectangle _LMFL_MATH_rectangle_move( lmfl_rectangle, lmfl_vector vector);
+lmfl_parallelogram _LMFL_MATH_parallegram_move( lmfl_parallelogram, lmfl_vector vector);
 
-bool _LMFL_MATH_whether_rectangle_contain_point( lmfl_rectangle this, lmfl_point point);
-bool _LMFL_MATH_whether_rectangle_contain_rectangle( lmfl_rectangle this, lmfl_rectangle rectangle);
-bool _LMFL_MATH_whether_intersect_rectangle( lmfl_rectangle this, lmfl_rectangle rectangle);
+bool _LMFL_MATH_whether_rectangle_contain_point( lmfl_rectangle, lmfl_point point);
+bool _LMFL_MATH_whether_rectangle_contain_rectangle( lmfl_rectangle, lmfl_rectangle rectangle);
+bool _LMFL_MATH_whether_intersect_rectangle( lmfl_rectangle, lmfl_rectangle rectangle);
 
-double _LMFL_MATH_get_vector_mudulus( lmfl_vector this);
-double _LMFL_MATH_get_vector_angle( lmfl_vector this);
-lmfl_vector _LMFL_MATH_get_vector_negtive( lmfl_vector this);
+double _LMFL_MATH_get_vector_mudulus( lmfl_vector);
+double _LMFL_MATH_get_vector_angle( lmfl_vector);
+lmfl_vector _LMFL_MATH_get_vector_negtive( lmfl_vector);
 
 lmfl_vector _LMFL_MATH_calculate_vector_sub( lmfl_vector minu, lmfl_vector subh);
 lmfl_vector _LMFL_MATH_calculate_vector_add( lmfl_vector vector0, lmfl_vector vector1);
 
-lmfl_point _LMFL_MATH_point_wound( lmfl_point this, lmfl_point centre, double angle);
-lmfl_parallelogram _LMFL_MATH_parallegram_wound( lmfl_parallelogram this, lmfl_point centre, double angle);
+lmfl_point _LMFL_MATH_point_wound( lmfl_point, lmfl_point centre, double angle);
+lmfl_parallelogram _LMFL_MATH_parallegram_wound( lmfl_parallelogram, lmfl_point centre, double angle);
 #   endif /*_LMFL_MATH_*/
 
 #   ifndef _LMFL_THREAD_
@@ -206,9 +218,9 @@ typedef LPTHREAD_START_ROUTINE lmfl_tfunc;
 
 lmfl_thread _LMFL_THREAD_thread_create0( lmfl_tfunc func, lmfl_void param);
 bool _LMFL_THREAD_thread_exit();
-bool _LMFL_THREAD_thread_resume( lmfl_thread* this);
-bool _LMFL_THREAD_thread_suspend( lmfl_thread* this);
-bool _LMFL_THREAD_thread_delete( lmfl_thread* this);
+bool _LMFL_THREAD_thread_resume( lmfl_thread*);
+bool _LMFL_THREAD_thread_suspend( lmfl_thread*);
+bool _LMFL_THREAD_thread_delete( lmfl_thread*);
 #   endif /*_LMFL_THREAD_*/
 
 #   ifndef _LMFL_PLANE_
@@ -225,33 +237,33 @@ lmfl_plane;
 
 lmfl_plane _LMFL_PLANE_plane_create0( lmfl_plane* father, unsigned width, unsigned height);
 lmfl_plane _LMFL_PLANE_plane_create1( lmfl_plane* father, char* path, unsigned width, unsigned height);
-bool _LMFL_PLANE_plane_delete( lmfl_plane* this);
-bool _LMFL_PLANE_plane_set_pixel( lmfl_plane* this, lmfl_point point, lmfl_rgb color);
-lmfl_rgb _LMFL_PLANE_plane_get_pixel( lmfl_plane* this, lmfl_point point);
+bool _LMFL_PLANE_plane_delete( lmfl_plane*);
+bool _LMFL_PLANE_plane_set_pixel( lmfl_plane*, lmfl_point point, lmfl_rgb color);
+lmfl_rgb _LMFL_PLANE_plane_get_pixel( lmfl_plane*, lmfl_point point);
 
-bool _LMFL_PLANE_plane_pasteTo_whole_cover( lmfl_plane* this, lmfl_plane* plane, lmfl_point plane_corner);
-bool _LMFL_PLANE_plane_pasteTo_rectangle_cover( lmfl_plane* this, lmfl_plane* plane, lmfl_rectangle plane_rectangle);
-bool _LMFL_PLANE_plane_pasteTo_parallelogram_cover( lmfl_plane* this, lmfl_plane* plane, lmfl_parallelogram plane_parallelogram);
+bool _LMFL_PLANE_plane_pasteTo_whole_cover( lmfl_plane*, lmfl_plane* plane, lmfl_point plane_corner);
+bool _LMFL_PLANE_plane_pasteTo_rectangle_cover( lmfl_plane*, lmfl_plane* plane, lmfl_rectangle plane_rectangle);
+bool _LMFL_PLANE_plane_pasteTo_parallelogram_cover( lmfl_plane*, lmfl_plane* plane, lmfl_parallelogram plane_parallelogram);
 
-bool _LMFL_PLANE_plane_pasteTo_whole_merge( lmfl_plane* this, lmfl_plane* plane, lmfl_point plane_corner);
-bool _LMFL_PLANE_plane_pasteTo_rectangle_merge( lmfl_plane* this, lmfl_plane* plane, lmfl_rectangle plane_rectangle);
-bool _LMFL_PLANE_plane_pasteTo_parallelogram_merge( lmfl_plane* this, lmfl_plane* plane, lmfl_parallelogram plane_parallelogram);
+bool _LMFL_PLANE_plane_pasteTo_whole_merge( lmfl_plane*, lmfl_plane* plane, lmfl_point plane_corner);
+bool _LMFL_PLANE_plane_pasteTo_rectangle_merge( lmfl_plane*, lmfl_plane* plane, lmfl_rectangle plane_rectangle);
+bool _LMFL_PLANE_plane_pasteTo_parallelogram_merge( lmfl_plane*, lmfl_plane* plane, lmfl_parallelogram plane_parallelogram);
 
-bool _LMFL_PLANE_plane_pasteTo_whole_cutOut( lmfl_plane* this, lmfl_plane* plane, lmfl_point plane_corner, lmfl_rgb color);
-bool _LMFL_PLANE_plane_pasteTo_rectangle_cutOut( lmfl_plane* this, lmfl_plane* plane, lmfl_rectangle plane_rectangle, lmfl_rgb color);
-bool _LMFL_PLANE_plane_pasteTo_parallelogram_cutOut( lmfl_plane* this, lmfl_plane* plane, lmfl_parallelogram plane_parallelogram, lmfl_rgb color);
+bool _LMFL_PLANE_plane_pasteTo_whole_cutOut( lmfl_plane*, lmfl_plane* plane, lmfl_point plane_corner, lmfl_rgb color);
+bool _LMFL_PLANE_plane_pasteTo_rectangle_cutOut( lmfl_plane*, lmfl_plane* plane, lmfl_rectangle plane_rectangle, lmfl_rgb color);
+bool _LMFL_PLANE_plane_pasteTo_parallelogram_cutOut( lmfl_plane* , lmfl_plane* plane, lmfl_parallelogram plane_parallelogram, lmfl_rgb color);
 
-bool _LMFL_PLANE_plane_cutTo_whole_cover( lmfl_plane* this, lmfl_rectangle this_rectangle, lmfl_plane* plane, lmfl_point plane_corner);
-bool _LMFL_PLANE_plane_cutTo_rectangle_cover( lmfl_plane* this, lmfl_rectangle this_rectangle, lmfl_plane* plane, lmfl_rectangle plane_rectangle);
-bool _LMFL_PLANE_plane_cutTo_parallelogram_cover( lmfl_plane* this, lmfl_rectangle this_rectangle, lmfl_plane* plane, lmfl_parallelogram plane_parallelogram);
+bool _LMFL_PLANE_plane_cutTo_whole_cover( lmfl_plane*, lmfl_rectangle this_rectangle, lmfl_plane* plane, lmfl_point plane_corner);
+bool _LMFL_PLANE_plane_cutTo_rectangle_cover( lmfl_plane*, lmfl_rectangle this_rectangle, lmfl_plane* plane, lmfl_rectangle plane_rectangle);
+bool _LMFL_PLANE_plane_cutTo_parallelogram_cover( lmfl_plane*, lmfl_rectangle this_rectangle, lmfl_plane* plane, lmfl_parallelogram plane_parallelogram);
 
-bool _LMFL_PLANE_plane_cutTo_whole_merge( lmfl_plane* this, lmfl_rectangle this_rectangle, lmfl_plane* plane, lmfl_point plane_corner);
-bool _LMFL_PLANE_plane_cutTo_rectangle_merge( lmfl_plane* this, lmfl_rectangle this_rectangle, lmfl_plane* plane, lmfl_rectangle plane_rectangle);
-bool _LMFL_PLANE_plane_cutTo_parallelogram_merge( lmfl_plane* this, lmfl_rectangle this_rectangle, lmfl_plane* plane, lmfl_parallelogram plane_parallelogram);
+bool _LMFL_PLANE_plane_cutTo_whole_merge( lmfl_plane*, lmfl_rectangle this_rectangle, lmfl_plane* plane, lmfl_point plane_corner);
+bool _LMFL_PLANE_plane_cutTo_rectangle_merge( lmfl_plane*, lmfl_rectangle this_rectangle, lmfl_plane* plane, lmfl_rectangle plane_rectangle);
+bool _LMFL_PLANE_plane_cutTo_parallelogram_merge( lmfl_plane*, lmfl_rectangle this_rectangle, lmfl_plane* plane, lmfl_parallelogram plane_parallelogram);
 
-bool _LMFL_PLANE_plane_cutTo_whole_cutOut( lmfl_plane* this, lmfl_rectangle this_rectangle, lmfl_plane* plane, lmfl_point plane_corner, lmfl_rgb color );
-bool _LMFL_PLANE_plane_cutTo_rectangle_cutOut( lmfl_plane* this, lmfl_rectangle this_rectangle, lmfl_plane* plane, lmfl_rectangle plane_rectangle, lmfl_rgb color);
-bool _LMFL_PLANE_plane_cutTo_parallelogram_cutOut( lmfl_plane* this, lmfl_rectangle this_rectangle, lmfl_plane* plane, lmfl_parallelogram plane_parallelogram, lmfl_rgb color);
+bool _LMFL_PLANE_plane_cutTo_whole_cutOut( lmfl_plane*, lmfl_rectangle this_rectangle, lmfl_plane* plane, lmfl_point plane_corner, lmfl_rgb color );
+bool _LMFL_PLANE_plane_cutTo_rectangle_cutOut( lmfl_plane*, lmfl_rectangle this_rectangle, lmfl_plane* plane, lmfl_rectangle plane_rectangle, lmfl_rgb color);
+bool _LMFL_PLANE_plane_cutTo_parallelogram_cutOut( lmfl_plane*, lmfl_rectangle this_rectangle, lmfl_plane* plane, lmfl_parallelogram plane_parallelogram, lmfl_rgb color);
 #   endif /*_LMFL_PLANE_*/
 
 #   ifndef _LMFL_GRAPH_
@@ -280,7 +292,7 @@ typedef struct{
 }
 lmfl_font;
 lmfl_font _LMFL_TEXT_font_create0( char* style, unsigned width, unsigned height, unsigned cweight, lmfl_rgb color);
-bool _LMFL_TEXT_font_delete( lmfl_font* this);
+bool _LMFL_TEXT_font_delete( lmfl_font*);
 
 bool _LMFL_TEXT_text_on( char* text, lmfl_font font, lmfl_rectangle rectangle, lmfl_plane* plane);
 #   endif/*_LMFL_TEXT_*/
@@ -305,20 +317,20 @@ lmfl_window _LMFL_WINDOW_lmfl_window_create2( char* title, char* iconPath, unsig
 lmfl_window _LMFL_WINDOW_lmfl_window_create3( char* title, unsigned width, unsigned height, bool main);
 lmfl_window _LMFL_WINDOW_lmfl_window_create4( char* title, unsigned width, unsigned height);
 
-bool _LMFL_WINDOW_lmfl_window_delete( lmfl_window* this);
+bool _LMFL_WINDOW_lmfl_window_delete( lmfl_window*);
 
-bool _LMFL_WINDOW_lmfl_window_hide( lmfl_window* this);
-bool _LMFL_WINDOW_lmfl_window_show( lmfl_window* this);
-bool _LMFL_WINDOW_lmfl_window_move( lmfl_window* this, lmfl_vector vector);
+bool _LMFL_WINDOW_lmfl_window_hide( lmfl_window*);
+bool _LMFL_WINDOW_lmfl_window_show( lmfl_window*);
+bool _LMFL_WINDOW_lmfl_window_move( lmfl_window*, lmfl_vector vector);
 
-bool _LMFL_WINDOW_lmfl_window_whether_exist( lmfl_window* this);
-bool _LMFL_WINDOW_lmfl_window_whether_focus( lmfl_window* this);
+bool _LMFL_WINDOW_lmfl_window_whether_exist( lmfl_window*);
+bool _LMFL_WINDOW_lmfl_window_whether_focus( lmfl_window*);
 
-bool _LMFL_WINDOW_lmfl_window_set_corner( lmfl_window* this, lmfl_point corner);
-bool _LMFL_WINDOW_lmfl_window_set_title( lmfl_window* this, char* title);
-bool _LMFL_WINDOW_lmfl_window_set_top( lmfl_window* this);
+bool _LMFL_WINDOW_lmfl_window_set_corner( lmfl_window*, lmfl_point corner);
+bool _LMFL_WINDOW_lmfl_window_set_title( lmfl_window*, char* title);
+bool _LMFL_WINDOW_lmfl_window_set_top( lmfl_window*);
 
-lmfl_point _LMFL_WINDOW_lmfl_window_get_corner( lmfl_window* this);
+lmfl_point _LMFL_WINDOW_lmfl_window_get_corner( lmfl_window*);
 #   endif /*_LMFL_WINDOW_*/
 
 #   ifndef _LMFL_EVENT_
@@ -357,13 +369,12 @@ typedef struct{
 lmfl_pushbox;
 
 lmfl_pushbox _LMFL_WIDGET_pushbox_create0( lmfl_rectangle rectangle, lmfl_pfuncs funcs, lmfl_window* window);
-bool _LMFL_WIDGET_pushbox_resume( lmfl_pushbox* this);
-bool _LMFL_WIDGET_pushbox_suspend( lmfl_pushbox* this);
-bool _LMFL_WIDGET_pushbox_delete( lmfl_pushbox* this);
+bool _LMFL_WIDGET_pushbox_resume( lmfl_pushbox*);
+bool _LMFL_WIDGET_pushbox_suspend( lmfl_pushbox*);
+bool _LMFL_WIDGET_pushbox_delete( lmfl_pushbox*);
 
 #   endif /*_LMFL_WIDGET_*/
 
-void LMFL();
 struct{
 #   ifdef _LMFL_BASIC_
     struct{
@@ -421,7 +432,7 @@ struct{
     struct{
         lmfl_stack(*create)(int);
         lmfl_stack(*create0)(int);
-        bool(*delete)(lmfl_stack*);
+        bool(*del)(lmfl_stack*);
         bool(*push)(lmfl_stack*,lmfl_data);
         bool(*pop)(lmfl_stack*);
         struct{
@@ -437,7 +448,7 @@ struct{
     struct{
         lmfl_queue(*create)();
         lmfl_queue(*create0)();
-        bool(*delete)(lmfl_queue*);
+        bool(*del)(lmfl_queue*);
         bool(*push)(lmfl_queue*,lmfl_data);
         bool(*pop)(lmfl_queue*);
         struct{
@@ -464,7 +475,7 @@ struct{
     }
     hpv;
     struct{
-        bool(*sort)(lmfl_data*,unsigned,lmfl_cfunc);
+        bool(*sort)(void*,unsigned,lmfl_cfunc);
     }
     algo;
 #   endif /*_LMFL_ALGO_*/
@@ -526,7 +537,7 @@ struct{
         bool(*exit)();
         bool(*resume)(lmfl_thread*);
         bool(*suspend)(lmfl_thread*);
-        bool(*delete)(lmfl_thread*);
+        bool(*del)(lmfl_thread*);
     }
     thread;
 #   endif /*_LMFL_THREAD_*/
@@ -535,7 +546,7 @@ struct{
         lmfl_plane(*create)(lmfl_plane*,unsigned,unsigned);
         lmfl_plane(*create0)(lmfl_plane*,unsigned,unsigned);
         lmfl_plane(*create1)(lmfl_plane*,char*,unsigned,unsigned);
-        bool(*delete)(lmfl_plane*);
+        bool(*del)(lmfl_plane*);
         struct{
             struct{
                 bool(*cover)(lmfl_plane*,lmfl_plane*,lmfl_point);
@@ -604,7 +615,7 @@ struct{
     struct{
         lmfl_font(*create)(char*,unsigned,unsigned,unsigned,lmfl_rgb);
         lmfl_font(*create0)(char*,unsigned,unsigned,unsigned,lmfl_rgb);
-        bool(*delete)(lmfl_font*);
+        bool(*del)(lmfl_font*);
     }
     font;
     struct{
@@ -620,7 +631,7 @@ struct{
         lmfl_window(*create2)(char*,char*,unsigned,unsigned);
         lmfl_window(*create3)(char*,unsigned,unsigned,bool);
         lmfl_window(*create4)(char*,unsigned,unsigned);
-        bool(*delete)(lmfl_window*);
+        bool(*del)(lmfl_window*);
         bool(*hide)(lmfl_window*);
         bool(*show)(lmfl_window*);
         bool(*move)(lmfl_window*,lmfl_vector);
@@ -724,7 +735,7 @@ struct{
     struct{
         lmfl_pushbox(*create)(lmfl_rectangle,lmfl_pfuncs,lmfl_window*);
         lmfl_pushbox(*create0)(lmfl_rectangle,lmfl_pfuncs,lmfl_window*);
-        bool(*delete)(lmfl_pushbox*);
+        bool(*del)(lmfl_pushbox*);
         bool(*resume)(lmfl_pushbox*);
         bool(*suspend)(lmfl_pushbox*);
     }

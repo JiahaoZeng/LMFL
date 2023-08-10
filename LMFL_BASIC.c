@@ -69,7 +69,7 @@ void _LMFL_BASIC_console_close(){
 }
 
 void _LMFL_BASIC_console_set_title( char* title){
-    SetConsoleTitle( TEXT(title));
+    SetConsoleTitle( TEXT((title)));
 }
 
 bool _LMFL_BASIC_whether_function_success( bool Bool){

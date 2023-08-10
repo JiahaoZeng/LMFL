@@ -145,17 +145,29 @@ bool _LMFL_ALGO_queue_whether_empty( lmfl_queue* this){
     return ( this->length == 0);
 }
 
-bool _LMFL_ALGO_sort( lmfl_data* array, unsigned length, lmfl_cfunc cmp){
+bool _LMFL_ALGO_sort( void* array, unsigned length, lmfl_cfunc cmp){
 // TODO
     return true;
 }
 
-bool _LMFL_ALGO_read( lmfl_hpv* this, char* num){
+lmfl_hpv _LMFL_ALGO_hpv_create0( unsigned MSD){
+    lmfl_hpv result;
+//TODO
+    return result;
+}
+
+lmfl_hpv _LMFL_ALGO_hpv_create1( unsigned MSD, lmfl_data source){
+    lmfl_hpv result;
+//TODO
+    return result;
+}
+
+bool _LMFL_ALGO_hpv_read( lmfl_hpv* this, char* num){
 // TODO
     return true;
 }
 
-bool _LMFL_ALGO_copy( lmfl_hpv* this, lmfl_hpv hpv){
+bool _LMFL_ALGO_hpv_copy( lmfl_hpv* this, lmfl_hpv hpv){
 // TODO
     return true;
 }

@@ -4,8 +4,8 @@
 #ifndef _LMFL_C
 #   define _LMFL_C
 #define LMFL {\
-    printf("LMFL init[\n");\
-    printf("_LMFL_BASIC_ init\n");\
+    printf("[LMFL] version %s, win\n", LMFL_VERSION);\
+    /*_LMFL_BASIC_ init*/\
     _LMFL_BASIC_GARBAGE_init();\
     lmfl.app.wait = &_LMFL_BASIC_wait;\
     lmfl.app.loop = &_LMFL_BASIC_loop;\
@@ -32,10 +32,10 @@
     lmfl.timer.start = &_LMFL_BASIC_timer_start;\
     lmfl.timer.stop = &_LMFL_BASIC_timer_stop;\
     lmfl.timer.get.time = &_LMFL_BASIC_timer_get_time;\
-    printf("_LMFL_ALGO_ init\n");\
+    /*_LMFL_ALGO_;*/\
     lmfl.stack.create = &_LMFL_ALGO_stack_create0;\
     lmfl.stack.create0 = &_LMFL_ALGO_stack_create0;\
-    lmfl.stack.delete = &_LMFL_ALGO_stack_delete;\
+    lmfl.stack.del = &_LMFL_ALGO_stack_delete;\
     lmfl.stack.push = &_LMFL_ALGO_stack_push;\
     lmfl.stack.pop = &_LMFL_ALGO_stack_pop;\
     lmfl.stack.get.top = &_LMFL_ALGO_stack_get_top;\
@@ -43,25 +43,25 @@
 \
     lmfl.queue.create = &_LMFL_ALGO_queue_create0;\
     lmfl.queue.create0 = &_LMFL_ALGO_queue_create0;\
-    lmfl.queue.delete = &_LMFL_ALGO_queue_delete;\
+    lmfl.queue.del = &_LMFL_ALGO_queue_delete;\
     lmfl.queue.push = &_LMFL_ALGO_queue_push;\
     lmfl.queue.pop = &_LMFL_ALGO_queue_pop;\
     lmfl.queue.get.front = &_LMFL_ALGO_queue_get_front;\
     lmfl.queue.whether.empty = &_LMFL_ALGO_queue_whether_empty;\
-
-    lmfl.hpv.create = &_LMFL_ALGO_create0;
-    lmfl.hpv.create0 = &_LMFL_ALGO_create0;
-    lmfl.hpv.create1 = &_LMFL_ALGO_create1;
-    lmfl.hpv.read = &_LMFL_ALGO_read;
-    lmfl.hpv.copy = &_LMFL_ALGO_copy;
-    lmfl.hpv.add = &_LMFL_ALGO_hpv_add;
-    lmfl.hpv.sub = &_LMFL_ALGO_hpv_sub;
-    lmfl.hpv.mult = &_LMFL_ALGO_hpv_mult;
-    lmfl.hpv.div = &_LMFL_ALGO_hpv_div;
-    lmfl.hpv.pow = &_LMFL_ALGO_hpv_pow;
-
-    lmfl.algo.sort = &_LMFL_ALGO_sort;
-    printf("_LMFL_MATH_ init\n");\
+\
+    lmfl.hpv.create = &_LMFL_ALGO_hpv_create0;\
+    lmfl.hpv.create0 = &_LMFL_ALGO_hpv_create0;\
+    lmfl.hpv.create1 = &_LMFL_ALGO_hpv_create1;\
+    lmfl.hpv.read = &_LMFL_ALGO_hpv_read;\
+    lmfl.hpv.copy = &_LMFL_ALGO_hpv_copy;\
+    lmfl.hpv.add = &_LMFL_ALGO_hpv_add;\
+    lmfl.hpv.sub = &_LMFL_ALGO_hpv_sub;\
+    lmfl.hpv.mult = &_LMFL_ALGO_hpv_mult;\
+    lmfl.hpv.div = &_LMFL_ALGO_hpv_div;\
+    lmfl.hpv.pow = &_LMFL_ALGO_hpv_pow;\
+\
+    lmfl.algo.sort = &_LMFL_ALGO_sort;\
+    /*_LMFL_MATH_ init*/\
     lmfl.math.point.create = &_LMFL_MATH_point_create0;\
     lmfl.math.point.create0 = &_LMFL_MATH_point_create0;\
     lmfl.math.point.move = &_LMFL_MATH_point_move;\
@@ -88,18 +88,18 @@
     lmfl.math.parallelogram.create0 = &_LMFL_MATH_parallegram_create0;\
     lmfl.math.parallelogram.move = &_LMFL_MATH_parallegram_move;\
     lmfl.math.parallelogram.wound = &_LMFL_MATH_parallegram_wound;\
-    printf("_LMFL_PLAY_ init\n");\
-    printf("_LMFL_THREAD_ init\n");\
+    /*_LMFL_PLAY_ init*/\
+    /*_LMFL_THREAD_ init*/\
     lmfl.thread.create = &_LMFL_THREAD_thread_create0;\
     lmfl.thread.create0 = &_LMFL_THREAD_thread_create0;\
     lmfl.thread.exit = &_LMFL_THREAD_thread_exit;\
     lmfl.thread.resume = &_LMFL_THREAD_thread_resume;\
     lmfl.thread.suspend = &_LMFL_THREAD_thread_suspend;\
-    lmfl.thread.delete = &_LMFL_THREAD_thread_delete;\
+    lmfl.thread.del = &_LMFL_THREAD_thread_delete;\
     lmfl.plane.create = &_LMFL_PLANE_plane_create0;\
     lmfl.plane.create0 = &_LMFL_PLANE_plane_create0;\
     lmfl.plane.create1 = &_LMFL_PLANE_plane_create1;\
-    lmfl.plane.delete = &_LMFL_PLANE_plane_delete;\
+    lmfl.plane.del = &_LMFL_PLANE_plane_delete;\
 \
     lmfl.plane.paste_to.whole.cover = &_LMFL_PLANE_plane_pasteTo_whole_cover;\
     lmfl.plane.paste_to.whole.merge = &_LMFL_PLANE_plane_pasteTo_whole_merge;\
@@ -127,23 +127,23 @@
 \
     lmfl.plane.set.pixel = &_LMFL_PLANE_plane_set_pixel;\
     lmfl.plane.get.pixel = &_LMFL_PLANE_plane_get_pixel;\
-    printf("_LMFL_GRAPH_ init\n");\
+    /*_LMFL_GRAPH_ init*/\
     lmfl.graph.gparam.create = &_LMFL_GRAPH_gparam_create0;\
     lmfl.graph.gparam.create0 = &_LMFL_GRAPH_gparam_create0;\
     lmfl.graph.on = &_LMFL_GRAPH_graph_on;\
-    printf("_LMFL_TEXT_ init\n");\
+    /*_LMFL_TEXT_ init*/\
     lmfl.font.create = &_LMFL_TEXT_font_create0;\
     lmfl.font.create0 = &_LMFL_TEXT_font_create0;\
-    lmfl.font.delete = &_LMFL_TEXT_font_delete;\
+    lmfl.font.del = &_LMFL_TEXT_font_delete;\
     lmfl.text.on = &_LMFL_TEXT_text_on;\
-    printf("_LMFL_WINDOW_ init\n");\
+    /*_LMFL_WINDOW_ init*/\
     lmfl.window.create = &_LMFL_WINDOW_lmfl_window_create0;\
     lmfl.window.create0 = &_LMFL_WINDOW_lmfl_window_create0;\
     lmfl.window.create1 = &_LMFL_WINDOW_lmfl_window_create1;\
     lmfl.window.create2 = &_LMFL_WINDOW_lmfl_window_create2;\
     lmfl.window.create3 = &_LMFL_WINDOW_lmfl_window_create3;\
     lmfl.window.create4 = &_LMFL_WINDOW_lmfl_window_create4;\
-    lmfl.window.delete = &_LMFL_WINDOW_lmfl_window_delete;\
+    lmfl.window.del = &_LMFL_WINDOW_lmfl_window_delete;\
 \
     lmfl.window.hide = &_LMFL_WINDOW_lmfl_window_hide;\
     lmfl.window.show = &_LMFL_WINDOW_lmfl_window_show;\
@@ -154,7 +154,7 @@
     lmfl.window.set.corner = &_LMFL_WINDOW_lmfl_window_set_corner;\
     lmfl.window.set.top = &_LMFL_WINDOW_lmfl_window_set_top;\
     lmfl.window.set.corner = &_LMFL_WINDOW_lmfl_window_set_corner;\
-    printf("_LMFL_EVENT_ init\n");\
+    /*_LMFL_EVENT_ init*/\
     lmfl.key.board.space = 32;\
     lmfl.key.board.left = 36;\
     lmfl.key.board.up = 33;\
@@ -205,14 +205,13 @@
 \
     lmfl.event.get.mouse = &_LMFL_EVENT_event_get_mouse;\
     lmfl.event.whether.check = &_LMFL_EVENT_event_whether_check;\
-    printf("_LMFL_WIDGET_ init\n");\
+    /*_LMFL_WIDGET_*/\
     lmfl.pushbox.create = &_LMFL_WIDGET_pushbox_create0;\
     lmfl.pushbox.create0 = &_LMFL_WIDGET_pushbox_create0;\
     lmfl.pushbox.resume = &_LMFL_WIDGET_pushbox_resume;\
     lmfl.pushbox.suspend = &_LMFL_WIDGET_pushbox_suspend;\
-    lmfl.pushbox.delete = &_LMFL_WIDGET_pushbox_delete;\
+    lmfl.pushbox.del = &_LMFL_WIDGET_pushbox_delete;\
 \
-    printf("]done.\n");\
     true;\
 }
 #endif /*_LMFL_C*/
@@ -222,8 +221,11 @@
 #   define _ALE_H
 #   ifndef _LMFL_
 #       include "LMFL.h"
-#       include "LMFL_INIT.h"
 #   endif
+#   ifdef BYTE
+#       undef BYTE
+#   endif
+#   define BYTE lmfl_byte
 #   ifdef DATA
 #       undef DATA
 #   endif
