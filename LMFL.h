@@ -1,6 +1,7 @@
 /**
-** LMFL.h - 1.0.0
-** Copyright (c) 2023 JiahaoZeng.
+** LMFL.h - 1.0.0  
+** Copyright (c) 2023 JiahaoZeng
+** Licensed under the Apache License 2.0
 **/
 
 #ifndef _LMFL_
@@ -20,9 +21,9 @@
 #       define _USE_MATH_DEFINES
 #       include <math.h>
 //Obstruct.
-//So that "this" can't be operate the same time in different threads.
-#       define _LMFL_BASIC_OBSTRACT(this)  {\
-            while( this->whether_operating);\
+//So that "This" can't be operate the same time in different threads.
+#       define _LMFL_BASIC_OBSTRACT(This)  {\
+            while( This->whether_operating);\
         }
 #       define _LMFL_BASIC_PUTERROR(error)  {\
             printf("LMFL ERROR:%s(func:%s,file:%s,line:%i)\n",error,__func__,__FILE__,__LINE__);\
@@ -483,6 +484,18 @@ struct{
     }
     hpv;
     struct{
+// Quicksort implementation using Hoare partition scheme
+
+/* Sorts the given array using quicksort algorithm.
+
+   Parameters:
+     - array: Pointer to the array to be sorted
+     - type_size: Size of each element in the array
+     - cmp: Comparison function to compare two elements
+     - length: Number of elements in the array
+
+   Sorting is done in-place, i.e. input array itself is modified.
+*/
         bool(*sort)(void*,unsigned,lmfl_cfunc,unsigned);
     }
     algo;
