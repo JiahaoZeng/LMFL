@@ -158,47 +158,23 @@ bool _LMFL_ALGO_queue_whether_empty( lmfl_queue* this){
 }
 
 bool _LMFL_ALGO_sort( void* array, unsigned type_size, lmfl_cfunc cmp, unsigned length){
-    if(length <= 1){
+    if(length < 2){
         return true;
     }
-
     typedef char ELE_TYPE[type_size];
     ELE_TYPE* arr = (ELE_TYPE*)array;
-
-    int pivotIndex = length / 2;
-    ELE_TYPE pivotData;
-    memcpy(pivotData, arr[pivotIndex], type_size);
-
-    int i = 0;
-    int j = length - 1;
-
-    while( i <= j){
-        while( cmp( LMFL_DATA_IMPORT(arr[i]), LMFL_DATA_IMPORT(pivotData)) < 0 && i < length){
-            i++;
-        }
-        while( cmp(LMFL_DATA_IMPORT(arr[j]), LMFL_DATA_IMPORT(pivotData)) > 0 && j >= 0){
+    for(int i = 1; i < length; i++){
+        ELE_TYPE tmp;
+        memcpy( &tmp, &arr[i], type_size);
+        int j = i;
+        while( j > 0 && cmp(LMFL_DATA_IMPORT(arr[j-1]), LMFL_DATA_IMPORT(tmp)) > 0){
+            memcpy(&arr[j], &arr[j-1], type_size);
             j--;
         }
-        if(i <= j){
-            ELE_TYPE temp;
-            memcpy( &temp, &arr[i], type_size);
-            memcpy( &arr[i], &arr[j], type_size);
-            memcpy( &arr[j], &temp, type_size);
-            i++;
-            j--;
-        }
+        memcpy( &arr[j], &tmp, type_size);
     }
-
-    if(j > 0){
-        _LMFL_ALGO_sort(arr, type_size, cmp, j + 1);
-    }
-    if(i < length){
-        _LMFL_ALGO_sort(arr + i, type_size, cmp, length - i); 
-    }
-
     return true;
 }
-
 
 lmfl_hpv _LMFL_ALGO_hpv_create0( unsigned MSD){
     lmfl_hpv result;
