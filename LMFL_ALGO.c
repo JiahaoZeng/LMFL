@@ -157,46 +157,25 @@ bool _LMFL_ALGO_queue_whether_empty( lmfl_queue* this){
     return ( this->length == 0);
 }
 
-bool _LMFL_ALGO_sort( void* array, unsigned type_size, lmfl_cfunc cmp, unsigned length){
-    typedef lmfl_byte ELE_TYPE[type_size];
-    ELE_TYPE* arr_tmp = (ELE_TYPE*)array;
-
-    if ( length == 0 || length == 1){
+bool _LMFL_ALGO_sort(void* array, unsigned type_size, lmfl_cfunc cmp, unsigned length){
+    if(length < 2){
         return true;
     }
-
-    ELE_TYPE pivot;
-    LMFL_DATA_EXPORT(arr_tmp[0], pivot);
-    unsigned left = 0;
-    unsigned right = length-1;
-
-    while ( left < right){
-        while( left < right && cmp(arr_tmp[right], pivot)){
-            right--;
+    typedef char ELE_TYPE[type_size];
+    ELE_TYPE* arr = (ELE_TYPE*)array;
+    for(int i = 1; i < length; i++){
+        ELE_TYPE tmp;
+        memcpy( &tmp, &arr[i], type_size);
+        int j = i;
+        while(j > 0 && cmp(LMFL_DATA_IMPORT(arr[j-1]), LMFL_DATA_IMPORT(tmp)) > 0){
+            memcpy(&arr[j], &arr[j-1], type_size);
+            j--;
         }
-        if ( left < right){
-            ELE_TYPE ele_tmp;
-            LMFL_DATA_EXPORT( arr_tmp[left], ele_tmp);
-            LMFL_DATA_EXPORT( arr_tmp[right], arr_tmp[left]);
-            LMFL_DATA_EXPORT( ele_tmp, arr_tmp[right]);
-        }
-
-        while( left < right && !cmp(arr_tmp[left], pivot)){
-            left++;
-        }
-        if ( left < right){
-            ELE_TYPE ele_tmp;
-            LMFL_DATA_EXPORT( arr_tmp[left], ele_tmp);
-            LMFL_DATA_EXPORT( arr_tmp[right], arr_tmp[left]);
-            LMFL_DATA_EXPORT( ele_tmp, arr_tmp[right]);
-        }
+        memcpy(&arr[j], &tmp, type_size);
     }
-
-    _LMFL_ALGO_sort( array, type_size, cmp, left);
-    _LMFL_ALGO_sort( array + left*type_size, type_size, cmp, length - left);
-
     return true;
 }
+
 
 lmfl_hpv _LMFL_ALGO_hpv_create0( unsigned MSD){
     lmfl_hpv result;

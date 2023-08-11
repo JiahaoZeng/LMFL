@@ -1,28 +1,9 @@
 /**
-** GetMax.c - An example of the LMFL DATA type.
+** sort.c - An example of the LMFL DATA type.
 ** Copyright (c) 2023 JiahaoZeng.
 **/
 
 #include "LMFL1.h"
-
-#ifndef GETMAX_FUNC
-#define GETMAX_FUNC
-typedef unsigned(*get_size_func)(DATA);
-
-DATA get_max( void* array, unsigned type_size, get_size_func size_func, unsigned length){
-    typedef BYTE TYPE[type_size];
-    TYPE* arr = (TYPE*)array;
-    DATA max = LMFL_DATA_IMPORT(arr[0]);
-
-    for( unsigned i = 1; i < length; i++){
-        if( size_func( arr[i]) > size_func( max)){
-            max = LMFL_DATA_IMPORT(arr[i]);
-        }
-    }
-
-    return max;
-}
-#endif /*GETMAX_FUNC*/
 
 #ifndef SONG_TYPE
 #define SONG_TYPE
@@ -32,10 +13,19 @@ typedef struct{
 }
 song;
 
-unsigned get_song_hotness( DATA data){
-    song This;
-    LMFL_DATA_EXPORT( data, This);
-    return This.hotness;
+bool compare_song_hotness(DATA d1, DATA d2){
+    song s1, s2;
+    LMFL_DATA_EXPORT(d1, s1);
+    LMFL_DATA_EXPORT(d2, s2);
+    return s1.hotness > s2.hotness;
+}
+
+void print_songs_name(song* array, unsigned length){
+    printf("Songs: ");
+    for(unsigned i = 0; i < length; i++){
+        printf("\"%s\" ", array[i].name);
+    }
+    printf(".\n");
 }
 #endif /*SONG_TYPE*/
 
@@ -47,17 +37,26 @@ typedef struct{
 }
 singer;
 
-unsigned get_singer_hotness( DATA data){
-    singer This;
-    LMFL_DATA_EXPORT( data, This);
-    return This.hotness;
+bool compare_singer_hotness(DATA d1, DATA d2){
+    singer s1, s2;
+    LMFL_DATA_EXPORT(d1, s1);
+    LMFL_DATA_EXPORT(d2, s2);
+    return s1.hotness > s2.hotness;
+}
+
+void print_singers_name(singer* array, unsigned length){
+    printf("Singers: ");
+    for(unsigned i = 0; i < length; i++){
+        printf("\"%s\" ", array[i].name);
+    }
+    printf(".\n");
 }
 #endif /*SINGER_TYPE*/
 
 int main(){
     LMFL;
 
-    // Find the hottest song
+    // sort song
     song songs[3];
     songs[0].hotness = 10;
     songs[0].name = "Awaiting on you all";
@@ -66,11 +65,10 @@ int main(){
     songs[2].hotness = 20;
     songs[2].name = "Run Of The Mill";
 
-    song hottest_song;
-    LMFL_DATA_EXPORT( get_max( songs, sizeof(song), get_song_hotness, 3), hottest_song);
-    printf( "The hottest song is: ¡¶%s¡·.\n", hottest_song.name);
+    _LMFL_ALGO_sort( songs, sizeof(song), compare_song_hotness, 3);
+    print_songs_name( songs, 3);
 
-    // Find the hottest singer
+    // sort singer
     singer singers[4];
     singers[0].hotness = 7;
     singers[0].name = "Paul McCartney";
@@ -81,9 +79,8 @@ int main(){
     singers[3].hotness = 100;
     singers[3].name = "George Harrison";
 
-    singer hottest_singer;
-    LMFL_DATA_EXPORT( get_max( singers, sizeof(singer), get_singer_hotness, 4), hottest_singer);
-    printf( "The hottest singer is: %s.\n", hottest_singer.name);
+    _LMFL_ALGO_sort( singers, sizeof(singer), compare_singer_hotness, 4);
+    print_singers_name( singers, 4);
 
     return 0;
 }

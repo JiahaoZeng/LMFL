@@ -28,7 +28,7 @@
             printf("LMFL ERROR:%s(func:%s,file:%s,line:%i)\n",error,__func__,__FILE__,__LINE__);\
         }
 
-typedef char lmfl_byte;
+typedef unsigned char lmfl_byte;
 typedef lmfl_byte* lmfl_data;
 //                             "resource" can't be a const but a var.
 #       define LMFL_DATA_IMPORT(resource) ({\
@@ -483,7 +483,7 @@ struct{
     }
     hpv;
     struct{
-        bool(*sort)(void*,unsigned,lmfl_cfunc);
+        bool(*sort)(void*,unsigned,lmfl_cfunc,unsigned);
     }
     algo;
 #   endif /*_LMFL_ALGO_*/
