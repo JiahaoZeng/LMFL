@@ -56,7 +56,7 @@ void print_singers_name(singer* array, unsigned length){
 int main(){
     LMFL;
 
-    // sort song
+    // sort songs
     song songs[3];
     songs[0].hotness = 10;
     songs[0].name = "Awaiting on you all";
@@ -65,10 +65,10 @@ int main(){
     songs[2].hotness = 20;
     songs[2].name = "Run Of The Mill";
 
-    _LMFL_ALGO_sort( songs, sizeof(song), compare_song_hotness, 3);
+    lmfl.algo.sort( songs, sizeof(song), compare_song_hotness, 3);
     print_songs_name( songs, 3);
 
-    // sort singer
+    // sort singers
     singer singers[4];
     singers[0].hotness = 7;
     singers[0].name = "Paul McCartney";
@@ -79,7 +79,7 @@ int main(){
     singers[3].hotness = 100;
     singers[3].name = "George Harrison";
 
-    _LMFL_ALGO_sort( singers, sizeof(singer), compare_singer_hotness, 4);
+    lmfl.algo.sort( singers, sizeof(singer), compare_singer_hotness, 4);
     print_singers_name( singers, 4);
 
     return 0;
