@@ -42,7 +42,7 @@ int main(){
 ** - width
 ** - height
 */
-    RECTANGLE text_region = lmfl.rectangle.create( lmfl.point( 0, 300-20), 20, 30);
+    RECTANGLE text_region = lmfl.rectangle.create( lmfl.point.create( 0, 300-20), 20, 30);
 
 /**
 ** params:
