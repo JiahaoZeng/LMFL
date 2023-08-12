@@ -16,45 +16,45 @@
 #include "LMFL1.h"
 
 int main(){
+    // init LMFL
     LMFL;
 
-/**
-** params:
-** - title
-** - width
-** - height
-*/
-    WINDOW wnd = lmfl.window.create4( "MyWnd", 300, 300);
+    // create window
+    WINDOW my_window = ({
+        const char* title = "MyWnd";
+        unsigned width = 300;
+        unsigned height = 300;
+        lmfl.window.create4( title, width, height);
+    });
 
-/**
-** params:
-** - style
-** - width
-** - height
-** - cweight
-** - color
-*/
-    FONT black_font = lmfl.font.create( "Courier New", 20, 30, 5, lmfl.rgb.create(0,0,0));
+    // create font
+    FONT my_font = ({
+        char* style = "Courier New";
+        unsigned width = 20;
+        unsigned height = 30;
+        unsigned cweight = 5;
+        RGB color = lmfl.rgb.create(0,0,0);
+        lmfl.font.create( style, width, height, cweight, color);
+    });
 
-/**
-** params:
-** - corner
-** - width
-** - height
-*/
-    RECTANGLE text_region = lmfl.rectangle.create( lmfl.point.create( 0, 300-20), 20, 30);
+    // show text
+    ({
+        const char* text = "Hello, LMFL!";
 
-/**
-** params:
-** - text
-** - font
-** - region
-** - plane
-*/
-    lmfl.text.on( "Hello, LMFL!", black_font, text_region, &wnd.plane);
+        RECTANGLE region = ({
+            POINT corner = lmfl.math.point.create( 0, 300-20);
+            unsigned width = 20;
+            unsigned height = 30;
+            lmfl.math.rectangle.create( width, height, corner);
+        });
 
-    lmfl.window.show( &wnd);
+        lmfl.text.on( text, my_font, region, &my_window.plane);
+    });
 
+    // update window
+    lmfl.window.show( &my_window);
+
+    // main loop
     lmfl.app.loop();
 }
 ```
