@@ -15,47 +15,48 @@
 ```C
 #include "LMFL1.h"
 
-int main(){
-    // init LMFL
-    LMFL;
+int main()
+{
+    LMFL; // init LMFL
 
-    // create window
-    WINDOW my_window = ({
+    WINDOW my_window =
+    exp_start // create window
         const char* title = "MyWnd";
         unsigned width = 300;
         unsigned height = 300;
-        lmfl.window.create4( title, width, height);
-    });
 
-    // create font
-    FONT my_font = ({
+        lmfl.window.create4( title, width, height);
+    exp_end;
+
+    FONT my_font =
+    exp_start // create font
         char* style = "Courier New";
         unsigned width = 20;
         unsigned height = 30;
         unsigned cweight = 5;
         RGB color = lmfl.rgb.create(0,0,0);
-        lmfl.font.create( style, width, height, cweight, color);
-    });
 
-    // show text
-    ({
+        lmfl.font.create( style, width, height, cweight, color);
+    exp_end;
+
+    exp_start // show text
         const char* text = "Hello, LMFL!";
 
-        RECTANGLE region = ({
+        RECTANGLE region =
+        exp_start // create region
             POINT corner = lmfl.math.point.create( 0, 300-20);
             unsigned width = 20;
             unsigned height = 30;
+
             lmfl.math.rectangle.create( width, height, corner);
-        });
+        exp_end
 
         lmfl.text.on( text, my_font, region, &my_window.plane);
-    });
+    exp_end
 
-    // update window
-    lmfl.window.show( &my_window);
+    lmfl.window.show( &my_window); // update window
 
-    // main loop
-    lmfl.app.loop();
+    lmfl.app.loop(); // main loop
 }
 ```
 ## Doc

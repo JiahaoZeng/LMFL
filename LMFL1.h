@@ -237,6 +237,14 @@
 #   ifndef _LMFL_
 #       include "LMFL.h"
 #   endif
+#   ifdef exp_start
+#       undef exp_start
+#   endif
+#   define exp_start ({
+#   ifdef exp_end
+#       undef exp_end
+#   endif
+#   define exp_end });
 #   ifdef BYTE
 #       undef BYTE
 #   endif
