@@ -22,6 +22,10 @@ lmfl_plane _LMFL_PLANE_plane_create0( lmfl_plane* father, unsigned width, unsign
     this._PRIVATE_hdc = CreateCompatibleDC( father->_PRIVATE_hdc);
     this._PRIVATE_map = CreateCompatibleBitmap( father->_PRIVATE_hdc, width, height);
     SelectObject( this._PRIVATE_hdc, this._PRIVATE_map);
+    int iPixelFormat = ChoosePixelFormat( this._PRIVATE_hdc, &_PRIVATE_LMFL_PIXELFORMATDESCRIPTOR);
+    SetPixelFormat( this._PRIVATE_hdc, iPixelFormat, &_PRIVATE_LMFL_PIXELFORMATDESCRIPTOR);
+    this._PRIVATE_hrc = NULL;
+    this._PRIVATE_whether_got_hrc = false;
     this.whether_operating = false;
     this.whether_alive = true;
     return this;
@@ -44,6 +48,11 @@ lmfl_plane _LMFL_PLANE_plane_create1( lmfl_plane* father, char* path, unsigned w
                                     LR_LOADFROMFILE
                                 );
     SelectObject( this._PRIVATE_hdc, this._PRIVATE_map);
+    int iPixelFormat = ChoosePixelFormat( this._PRIVATE_hdc, &_PRIVATE_LMFL_PIXELFORMATDESCRIPTOR);
+    SetPixelFormat( this._PRIVATE_hdc, iPixelFormat, &_PRIVATE_LMFL_PIXELFORMATDESCRIPTOR);
+    this._PRIVATE_hrc = NULL;
+    this._PRIVATE_whether_got_hrc = false;
+    _LMFL_BASIC_GARBAGE_dc_join( this._PRIVATE_hdc);
     return this;
 }
 
@@ -58,6 +67,9 @@ bool _LMFL_PLANE_plane_delete( lmfl_plane* this){
     this->whether_alive = false;
     DeleteObject( this->_PRIVATE_map);
     DeleteDC( this->_PRIVATE_hdc);
+    if ( this->_PRIVATE_whether_got_hrc){
+        wglDeleteContext( this->_PRIVATE_hrc);
+    }
     return true;
 }
 

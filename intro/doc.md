@@ -9,12 +9,12 @@
       - [compile](#compile)
       - [run](#run)
   - [DATA type](#data-type)
-  - [Macros](#macros)
-    - [notice](#notice-1)
-  - [Example](#example-1)
-    - [code](#code-1)
-    - [Compile](#compile-1)
-    - [Run](#run-1)
+    - [Macros](#macros)
+      - [notice](#notice-1)
+    - [Example](#example-1)
+      - [code](#code-1)
+      - [Compile](#compile-1)
+      - [Run](#run-1)
 ## Console functions
 **Those functions are used to operate the console when you add -mwindows as a compiler parameter**
 * void lmfl.app.console.open()
@@ -50,16 +50,16 @@ int main(){                                  //enter function
 ![image](resources/Hello.png)
 ## DATA type
 *This type is used to restore any types.*
-## Macros
+### Macros
 * **LMFL_DATA_IMPORT(resource)**
 * **LMFL_DATA_EXPORT(This,resource)**
-### notice
+#### notice
 * LMFL_DATA_IMPORT will restore "resource" to a DATA type and return the DATA type.
 * LMFL_DATA_EXPORT will restore a DATA type to "resource".
 * "resource" can't be a const but a var.
-## Example
+### Example
 *[example](examples/DATAexample/GetMax.c)*
-### code
+#### code
 ```C
 /**
 ** GetMax.c - An example of the LMFL DATA type.
@@ -151,9 +151,9 @@ int main(){
     return 0;
 }
 ```
-### Compile
+#### Compile
 > gcc GetMax.c LMFL.dll -o test
-### Run
+#### Run
 > XXX\XXX\XXX\>test
 ```
 [LMFL] version 1.0.0, win

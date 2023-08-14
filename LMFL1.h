@@ -143,6 +143,28 @@
     lmfl.plane.set.pixel = &_LMFL_PLANE_plane_set_pixel;\
     lmfl.plane.get.pixel = &_LMFL_PLANE_plane_get_pixel;\
     /*_LMFL_GRAPH_ init*/\
+    _PRIVATE_LMFL_OPENGL_WHETHER_USING = false;\
+    _PRIVATE_LMFL_PIXELFORMATDESCRIPTOR =\
+    {\
+        sizeof(PIXELFORMATDESCRIPTOR),\
+        1,\
+        PFD_DRAW_TO_WINDOW |\
+        PFD_SUPPORT_OPENGL |\
+        PFD_DOUBLEBUFFER,\
+        PFD_TYPE_RGBA,\
+        24, \
+        0, 0, 0, 0, 0, 0,\
+        0,\
+        0,\
+        0,\
+        0, 0, 0, 0,\
+        32,\
+        0,\
+        0,\
+        PFD_MAIN_PLANE,\
+        0,\
+        0, 0, 0\
+    };\
     lmfl.graph.gparam.create = &_LMFL_GRAPH_gparam_create0;\
     lmfl.graph.gparam.create0 = &_LMFL_GRAPH_gparam_create0;\
     lmfl.graph.on = &_LMFL_GRAPH_graph_on;\

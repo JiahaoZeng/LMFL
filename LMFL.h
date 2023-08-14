@@ -29,6 +29,7 @@
 #       include <mmsystem.h>
 #       define _USE_MATH_DEFINES
 #       include <math.h>
+#       include <gl/gl.h>
 //Obstruct.
 //So that "This" can't be operate the same time in different threads.
 #       define _LMFL_BASIC_OBSTRACT(This)  {\
@@ -246,6 +247,8 @@ bool _LMFL_THREAD_thread_delete( lmfl_thread*);
 typedef struct _LMFL_PLANE_lmfl_plane_tag{
     HDC _PRIVATE_hdc;
     HBITMAP _PRIVATE_map;
+    HGLRC _PRIVATE_hrc;
+    bool _PRIVATE_whether_got_hrc;
     unsigned width;
     unsigned height;
     bool whether_operating;
@@ -286,6 +289,9 @@ bool _LMFL_PLANE_plane_cutTo_parallelogram_cutOut( lmfl_plane*, lmfl_rectangle t
 
 #   ifndef _LMFL_GRAPH_
 #       define _LMFL_GRAPH_
+bool _PRIVATE_LMFL_OPENGL_WHETHER_USING;
+PIXELFORMATDESCRIPTOR _PRIVATE_LMFL_PIXELFORMATDESCRIPTOR;
+
 typedef bool(*lmfl_gfunc)(lmfl_point);
 typedef struct{
     unsigned cweight;
@@ -431,6 +437,13 @@ struct{
             unsigned(*gray)(lmfl_rgb);
         }
         get;
+    //*********** basic colors *********************
+        lmfl_rgb white;
+        lmfl_rgb black;
+        lmfl_rgb red;
+        lmfl_rgb green;
+        lmfl_rgb blue;
+    //********************************************
     }
     rgb;
     struct{
@@ -681,6 +694,7 @@ struct{
     window;
 #   endif /*_LMFL_WINDOW_*/
 #   ifdef _LMFL_EVENT_
+//**************** keys **********************
     struct{
         struct{
             int space;
@@ -748,6 +762,7 @@ struct{
         mouse;
     }
     key;
+//***************************************
     struct{
         struct{
             lmfl_point(*mouse)(lmfl_window*);

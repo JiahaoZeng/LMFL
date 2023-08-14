@@ -171,18 +171,20 @@ bool _LMFL_ALGO_sort( void* array, unsigned type_size, lmfl_cfunc cmp, unsigned 
     if(length < 2){
         return true;
     }
+
     typedef char ELE_TYPE[type_size];
     ELE_TYPE* arr = (ELE_TYPE*)array;
-    for(int i = 1; i < length; i++){
+    for( int i = 1; i < length; i++){
         ELE_TYPE tmp;
         memcpy( &tmp, &arr[i], type_size);
         int j = i;
-        while( j > 0 && cmp(LMFL_DATA_IMPORT(arr[j-1]), LMFL_DATA_IMPORT(tmp)) > 0){
+        while( j > 0 && cmp(LMFL_DATA_IMPORT(arr[j-1]), LMFL_DATA_IMPORT(tmp))){
             memcpy(&arr[j], &arr[j-1], type_size);
             j--;
         }
         memcpy( &arr[j], &tmp, type_size);
     }
+    
     return true;
 }
 
